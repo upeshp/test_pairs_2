@@ -1,4 +1,4 @@
-// cards array holds all cards
+// *** 1. array to hold all cards, i.e. all the list items given a class of card ***
 let card = document.getElementsByClassName("card");
 let cards = [...card];
 
@@ -15,22 +15,21 @@ const stars = document.querySelectorAll(".fa-star");
 // declaring variable of matchedCards
 let matchedCard = document.getElementsByClassName("match");
 
- // stars list
+ // *** 12. stars list for modal?
  let starsList = document.querySelectorAll(".stars li");
 
- // close icon in modal
+ // *** 12. close icon in modal
  let closeicon = document.querySelector(".close");
 
- // declare modal
+ // *** 12. declare modal
  let modal = document.getElementById("popup1")
 
  // array for opened cards
 var openedCards = [];
 
 
-// @description shuffles cards
-// @param {array}
-// @returns shuffledarray
+// *** 4. a function to shuffle an array was already provided from here. This is known as Fisher-Yates (aka Knuth) Shuffle. With this function, we should be able to shuffle our cards on the game board
+// *** 4. From the function above, our cards array will be the parameter. Like so: shuffle(cards);
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -46,17 +45,17 @@ function shuffle(array) {
 };
 
 
-// @description shuffles cards when page is refreshed / loads
+// *** 7. to shuffle the cards on load (saying once this page is loaded, run the startGame function.)
 document.body.onload = startGame();
 
 
-// @description function to start a new play 
+// *** 6. start game function, this shuffles/displays cards (below)
 function startGame(){
  
     // empty the openCards array
     openedCards = [];
 
-    // shuffle deck
+    // *** 5. shuffle deck: the function 'shuffle' doesn't change the position of cards on game board, so need to loop through the generated shuffle array and display each card deck with
     cards = shuffle(cards);
     // remove all exisiting classes from each card
     for (var i = 0; i < cards.length; i++){
@@ -84,7 +83,8 @@ function startGame(){
 }
 
 
-// @description toggles open and show class to display cards
+// *** 3. display card function, toggles open and show class to display cards
+// *** 3. The displayCard function here toggles ‘open’, ‘show’ and ‘disabled’ classes in css. This lets the card icon show and disables the card when it’s opened. Hence, when a card is shown it can’t be clicked on again till it is closed. 
 var displayCard = function (){
     this.classList.toggle("open");
     this.classList.toggle("show");
@@ -92,7 +92,9 @@ var displayCard = function (){
 };
 
 
-// @description add opened cards to OpenedCards list and check if cards are match or not
+// *** 8. add opened cards to OpenedCards list and check if cards are match or not
+// *** 8. For this part, we need to make each card unique. Since icons on each cards are different, I gave each card object a type property that corresponds to the icon of the card to distinguish each card.
+// *** 8.  
 function cardOpen() {
     openedCards.push(this);
     var len = openedCards.length;
@@ -150,7 +152,7 @@ function enable(){
 }
 
 
-// @description count player's moves
+// *** 9. counts move on selecting 2 cards
 function moveCounter(){
     moves++;
     counter.innerHTML = moves;
@@ -161,7 +163,7 @@ function moveCounter(){
         hour = 0;
         startTimer();
     }
-    // setting rates based on moves
+    // *** 10. star rating, setting rates based on moves
     if (moves > 8 && moves < 12){
         for( i= 0; i < 3; i++){
             if(i > 1){
@@ -179,7 +181,7 @@ function moveCounter(){
 }
 
 
-// @description game timer
+// *** 11. game timer
 var second = 0, minute = 0; hour = 0;
 var timer = document.querySelector(".timer");
 var interval;
@@ -199,7 +201,8 @@ function startTimer(){
 }
 
 
-// @description congratulations when all cards match, show modal and moves, time and rating
+// 12. congratulations when all cards match, show modal and moves, time and rating
+// 12. The congratulations function checks to see if all cards are matched, if they are matched then it stops the timer. gets number of moves, star rating and time spent. and displays on the congratulation modal. There are also some functions that close the modal and reset the game on clicking the close icon and play again button provided in the modal.
 function congratulations(){
     if (matchedCard.length == 16){
         clearInterval(interval);
@@ -231,14 +234,15 @@ function closeModal(){
 }
 
 
-// @desciption for user to play Again 
+// @desciption for user to play Again - unshows all cards then starts game
 function playAgain(){
     modal.classList.remove("show");
     startGame();
 }
 
 
-// loop to add event listeners to each card
+// *** 2. loop to add event listeners to each card, i.e. set variable to zero so counting starts at zero, iterate as long as i < length of array, then first action is to display card
+// *** 2. each loop will add an event listener which listens for a click on the card and runs the displayCard function on click 
 for (var i = 0; i < cards.length; i++){
     card = cards[i];
     card.addEventListener("click", displayCard);
